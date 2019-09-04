@@ -1,6 +1,8 @@
-use log::info;
 use std::path::PathBuf;
 use structopt::StructOpt;
+
+mod render_cmd;
+mod tracer;
 
 #[derive(StructOpt, Debug)]
 #[structopt(
@@ -23,23 +25,12 @@ enum Cli {
         #[structopt(long = "samples", default_value = "100")]
         samples: u64,
 
+        #[structopt(long = "threads", short = "t")]
+        threads: Option<usize>,
+
         #[structopt(flatten)]
         verbose: clap_verbosity_flag::Verbosity,
     },
-}
-
-fn render(
-    output: PathBuf,
-    width: u64,
-    height: u64,
-    samples: u64,
-) -> Result<(), Box<dyn std::error::Error>> {
-    info!(
-        "Render called with output {:?}, width: {}, height: {}, samples: {}",
-        output, width, height, samples
-    );
-
-    Ok(())
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -51,12 +42,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             width,
             height,
             samples,
+            threads,
             verbose,
         } => {
             let name = env!("CARGO_PKG_NAME");
             verbose.setup_env_logger(name)?;
 
-            return render(output, width, height, samples);
+            return render_cmd::render(output, width, height, samples, threads);
         }
     }
 }

@@ -4,8 +4,8 @@ use crate::tracer::geometry::Sphere;
 use crate::tracer::materials::*;
 use crate::tracer::*;
 use cgmath::*;
+use console::{style, Emoji};
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
 use rand::prelude::*;
 use rayon::current_num_threads;
 use std::path::PathBuf;
@@ -118,6 +118,11 @@ fn init_thread_pool(threads: Option<usize>) -> usize {
     }
 }
 
+static SCENE: Emoji<'_, '_> = Emoji("🎬 ", "");
+static THREAD: Emoji<'_, '_> = Emoji("🧵  ", "");
+static SPARKLE: Emoji<'_, '_> = Emoji("✨ ", ":-)");
+static RENDER: Emoji<'_, '_> = Emoji("🖼️  ", "");
+
 pub fn render(
     output: PathBuf,
     width: u64,
@@ -126,11 +131,31 @@ pub fn render(
     threads: Option<usize>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let thread_count = init_thread_pool(threads);
+    println!(
+        "{} {}Initializing threadpool using {} threads...",
+        style("[1/4]").bold().dim(),
+        THREAD,
+        current_num_threads()
+    );
 
-    let mut render_context = RenderContext::new(width, height, samples);
+    println!("{} {}Loading scene...", style("[2/4]").bold().dim(), SCENE);
+
     let scene = get_scene(width, height);
 
-    info!("Using {} threads...", current_num_threads());
+    println!(
+        "{} {}Initializing render context scene...",
+        style("[3/4]").bold().dim(),
+        SPARKLE
+    );
+
+    let mut render_context = RenderContext::new(width, height, samples);
+
+    println!(
+        "{} {}Rendering image to {:?}",
+        style("[4/4]").bold().dim(),
+        RENDER,
+        output
+    );
 
     let progress_bar = ProgressBar::new(width * height);
     progress_bar.set_draw_delta(100);

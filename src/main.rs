@@ -48,7 +48,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let name = env!("CARGO_PKG_NAME");
             verbose.setup_env_logger(name)?;
 
-            return render_cmd::render(output, width, height, samples, threads);
+            render_cmd::render(output, width, height, samples, threads)
         }
     }
 }

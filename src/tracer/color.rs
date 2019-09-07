@@ -113,6 +113,17 @@ impl DivAssign<u64> for Color {
     }
 }
 
+impl DivAssign<u32> for Color {
+    fn div_assign(&mut self, rhs: u32) {
+        let f = rhs as f64;
+        *self = Self {
+            red: self.red / f,
+            green: self.green / f,
+            blue: self.blue / f,
+        };
+    }
+}
+
 impl Div<f64> for Color {
     type Output = Color;
 

@@ -1,7 +1,14 @@
 use crate::tracer::{Camera, Geometry, Intersection, Ray, SceneObject};
 use std::sync::Arc;
 
+#[derive(Copy, Clone, Debug)]
+pub struct RenderOpts {
+    pub max_depth: u32,
+    pub samples: u32,
+}
+
 pub struct Scene {
+    pub options: RenderOpts,
     pub camera: Box<dyn Camera>,
     pub objects: Vec<Arc<SceneObject>>,
 }
@@ -12,8 +19,9 @@ pub struct SceneIntersection {
 }
 
 impl Scene {
-    pub fn new(camera: Box<dyn Camera>) -> Scene {
+    pub fn new(camera: Box<dyn Camera>, options: RenderOpts) -> Scene {
         Scene {
+            options,
             camera,
             objects: Vec::new(),
         }

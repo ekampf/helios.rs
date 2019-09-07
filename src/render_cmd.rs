@@ -40,9 +40,13 @@ fn get_camera(width: u64, height: u64) -> Box<dyn Camera> {
     Box::new(camera)
 }
 
-fn get_scene(width: u64, height: u64) -> Scene {
+fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     let camera = get_camera(width, height);
-    let mut scene = Scene::new(camera);
+    let render_options = RenderOpts {
+        max_depth: 50,
+        samples: samples as u32,
+    };
+    let mut scene = Scene::new(camera, render_options);
 
     let bg_sphere = Sphere {
         center: Point3::new(0.0, -1000.0, 0.0),
@@ -140,7 +144,7 @@ pub fn render(
 
     println!("{} {}Loading scene...", style("[2/4]").bold().dim(), SCENE);
 
-    let scene = get_scene(width, height);
+    let scene = get_scene(width, height, samples);
 
     println!(
         "{} {}Initializing render context scene...",
@@ -148,7 +152,7 @@ pub fn render(
         SPARKLE
     );
 
-    let mut render_context = RenderContext::new(width, height, samples);
+    let mut render_context = RenderContext::new(width, height);
 
     println!(
         "{} {}Rendering image to {:?}",

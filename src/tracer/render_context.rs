@@ -20,7 +20,6 @@ use std::sync::{Arc, Mutex};
 pub struct RenderContext {
     pub width: u64,
     pub height: u64,
-    pub samples: u64,
 
     pub pixels: Vec<Color>,
 
@@ -45,12 +44,11 @@ pub struct RenderResult {
 }
 
 impl RenderContext {
-    pub fn new(width: u64, height: u64, samples: u64) -> RenderContext {
+    pub fn new(width: u64, height: u64) -> RenderContext {
         let total_pixels = width * height;
         RenderContext {
             width,
             height,
-            samples,
             pixels: vec![Color::black(); total_pixels as usize],
             rays_cast: 0,
             start_time: time::precise_time_s(),
@@ -132,12 +130,10 @@ impl RenderContext {
         let render_tasks = self.get_tasks(threads * 3);
         info!("Render tasks: {}", render_tasks.len());
 
-        let samples = self.samples;
-
         let rcm = Arc::new(Mutex::new(self));
 
         render_tasks.into_par_iter().for_each_with(rcm, |rcm, t| {
-            let result = t.render(&scene, samples, pb);
+            let result = t.render(&scene, pb);
 
             let mut rc = rcm.lock().unwrap();
             rc.apply_render_result(&t, &result);
@@ -187,14 +183,14 @@ impl RenderTask {
         self.from_y..self.to_y
     }
 
-    pub fn render(&self, scene: &Scene, samples: u64, pb: &ProgressBar) -> RenderResult {
+    pub fn render(&self, scene: &Scene, pb: &ProgressBar) -> RenderResult {
         let total_pixels = self.task_pixels_count();
         let mut pixels: Vec<Color> = Vec::with_capacity(total_pixels as usize);
         let mut rays_cast = 0;
 
         for y in self.yrange() {
             for x in self.xrange() {
-                let (cast, pixel) = self.render_pixel(x, y, samples, &scene);
+                let (cast, pixel) = self.render_pixel(x, y, &scene);
                 pixels.push(pixel);
                 rays_cast += cast;
                 pb.inc(1);
@@ -204,7 +200,7 @@ impl RenderTask {
         RenderResult { pixels, rays_cast }
     }
 
-    fn render_pixel(&self, x: u64, y: u64, samples: u64, scene: &Scene) -> (u64, Color) {
+    fn render_pixel(&self, x: u64, y: u64, scene: &Scene) -> (u64, Color) {
         let mut color = Color::black();
         let mut rays_count = 0;
         let mut rng = rand::thread_rng();
@@ -212,6 +208,7 @@ impl RenderTask {
         let x = x as f64;
         let y = y as f64;
 
+        let samples = scene.options.samples;
         let width = self.width as f64;
         let height = self.height as f64;
 
@@ -245,7 +242,7 @@ impl RenderTask {
                 .geometry
                 .get_material(intersection.intersection.point);
 
-            if depth < 50 {
+            if depth < scene.options.max_depth {
                 if let Some(ref scatter_ray) = material.scatter(ray, &intersection.intersection) {
                     let attenution = scatter_ray.attenuation;
                     let color = RenderTask::cast_ray(&scatter_ray.ray, scene, rng, depth + 1);

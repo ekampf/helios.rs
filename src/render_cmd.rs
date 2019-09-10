@@ -1,5 +1,3 @@
-extern crate rayon;
-
 use crate::scenes;
 use crate::tracer::*;
 use console::{style, Emoji};

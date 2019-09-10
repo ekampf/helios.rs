@@ -1,6 +1,3 @@
-extern crate cgmath;
-extern crate rand;
-
 mod camera;
 mod color;
 mod geometry_traits;

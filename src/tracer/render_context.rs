@@ -1,9 +1,3 @@
-extern crate cgmath;
-extern crate image;
-extern crate itertools;
-extern crate rand;
-extern crate time;
-
 use crate::tracer::{Color, Ray, Scene};
 use cgmath::*;
 use image::ImageBuffer;

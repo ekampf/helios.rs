@@ -143,7 +143,7 @@ impl RenderContext {
         });
     }
 
-    pub fn save(&self, output: PathBuf) {
+    pub fn save(&self, output: &PathBuf) {
         let img = ImageBuffer::from_fn(self.width as u32, self.height as u32, |x, y| {
             let x = x as u64;
             let y = y as u64;

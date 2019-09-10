@@ -30,6 +30,9 @@ enum Cli {
 
         #[structopt(flatten)]
         verbose: clap_verbosity_flag::Verbosity,
+
+        #[structopt(long = "open", short = "o")]
+        open: bool,
     },
 }
 
@@ -44,11 +47,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             samples,
             threads,
             verbose,
+            open,
         } => {
             let name = env!("CARGO_PKG_NAME");
             verbose.setup_env_logger(name)?;
 
-            render_cmd::render(output, width, height, samples, threads)
+            let result = render_cmd::render(&output, width, height, samples, threads);
+
+            if open {
+                opener::open(output)?;
+            }
+
+            result
         }
     }
 }

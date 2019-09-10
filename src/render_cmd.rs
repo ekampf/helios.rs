@@ -128,7 +128,7 @@ static SPARKLE: Emoji<'_, '_> = Emoji("✨ ", ":-)");
 static RENDER: Emoji<'_, '_> = Emoji("🖼️  ", "");
 
 pub fn render(
-    output: PathBuf,
+    output: &PathBuf,
     width: u64,
     height: u64,
     samples: u64,

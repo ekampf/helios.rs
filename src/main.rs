@@ -2,6 +2,7 @@ use std::path::PathBuf;
 use structopt::StructOpt;
 
 mod render_cmd;
+mod scenes;
 mod tracer;
 
 #[derive(StructOpt, Debug)]

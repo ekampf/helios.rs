@@ -75,10 +75,7 @@ impl Material for Dielectric {
 
         return Some(ScatteredRay {
             attenuation,
-            ray: Ray {
-                origin: hit.point,
-                direction: scatter_ray_direction,
-            },
+            ray: Ray::new(hit.point, scatter_ray_direction),
         });
     }
 }

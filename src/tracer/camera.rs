@@ -72,12 +72,12 @@ impl Camera for SimpleCamera {
 
         let origin = self.origin.to_vec() + offset_vec;
 
-        Ray {
-            origin: Point3::new(origin.x, origin.y, origin.z),
-            direction: self.lower_left_corner + (self.horizontal * u) + (self.vertical * v)
+        Ray::new(
+            Point3::new(origin.x, origin.y, origin.z),
+            self.lower_left_corner + (self.horizontal * u) + (self.vertical * v)
                 - self.origin.to_vec()
                 - offset_vec,
-        }
+        )
     }
 }
 

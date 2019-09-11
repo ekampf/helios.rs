@@ -1,5 +1,5 @@
 [package]
-name = "rusty-beam"
+name = "rustybeam"
 version = "0.1.0"
 authors = ["Eran Kampf <e.kampf@anchorfree.com>"]
 edition = "2018"
@@ -22,3 +22,10 @@ rayon = "1.2.0"
 rand = "0.7.0"
 cgmath = "0.17.0"
 image = "0.22.1"
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "ballsweekend_benchmark"
+harness = false

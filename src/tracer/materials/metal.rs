@@ -25,10 +25,10 @@ impl Material for Metal {
         let unit_in_direction = ray_in.direction.normalize();
         let reflected = reflect(unit_in_direction, hit.normal);
 
-        let scattered = Ray {
-            origin: hit.point,
-            direction: reflected + random_point_on_unit_sphere() * self.fuzz,
-        };
+        let scattered = Ray::new(
+            hit.point,
+            reflected + random_point_on_unit_sphere() * self.fuzz,
+        );
 
         let is_scattered = scattered.direction.dot(hit.normal) > 0.0;
         if is_scattered {

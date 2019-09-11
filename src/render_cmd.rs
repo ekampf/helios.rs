@@ -65,7 +65,7 @@ pub fn render(
             .progress_chars("##-"),
     );
 
-    render_context.render(&scene, thread_count, &progress_bar);
+    render_context.render(&scene, thread_count, Some(&progress_bar));
 
     render_context.print_stats();
 

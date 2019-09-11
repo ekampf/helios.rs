@@ -26,10 +26,7 @@ pub fn refract(v: Vector3f, n: Vector3f, ni_over_nt: f64) -> Option<Vector3f> {
 }
 
 pub fn scatter_lambertian(albedo: Vector3f, hit: &Intersection) -> ScatteredRay {
-    let reflection = Ray {
-        origin: hit.point,
-        direction: hit.normal + random_point_on_unit_sphere(),
-    };
+    let reflection = Ray::new(hit.point, hit.normal + random_point_on_unit_sphere());
 
     ScatteredRay {
         attenuation: albedo,

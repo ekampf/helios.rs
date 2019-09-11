@@ -120,7 +120,7 @@ impl RenderContext {
         self.rays_cast += result.rays_cast;
     }
 
-    pub fn render(&mut self, scene: &Scene, threads: usize, pb: &ProgressBar) {
+    pub fn render(&mut self, scene: &Scene, threads: usize, pb: Option<&ProgressBar>) {
         let render_tasks = self.get_tasks(threads * 3);
         info!("Render tasks: {}", render_tasks.len());
 
@@ -132,8 +132,10 @@ impl RenderContext {
             let mut rc = rcm.lock().unwrap();
             rc.apply_render_result(&t, &result);
 
-            let message = rc.get_stats_message();
-            pb.set_message(&*message);
+            if let Some(pb) = pb {
+                let message = rc.get_stats_message();
+                pb.set_message(&*message);
+            }
         });
     }
 
@@ -177,7 +179,7 @@ impl RenderTask {
         self.from_y..self.to_y
     }
 
-    pub fn render(&self, scene: &Scene, pb: &ProgressBar) -> RenderResult {
+    pub fn render(&self, scene: &Scene, pb: Option<&ProgressBar>) -> RenderResult {
         let total_pixels = self.task_pixels_count();
         let mut pixels: Vec<Color> = Vec::with_capacity(total_pixels as usize);
         let mut rays_cast = 0;
@@ -187,7 +189,10 @@ impl RenderTask {
                 let (cast, pixel) = self.render_pixel(x, y, &scene);
                 pixels.push(pixel);
                 rays_cast += cast;
-                pb.inc(1);
+
+                if pb.is_some() {
+                    pb.unwrap().inc(1);
+                }
             }
         }
 

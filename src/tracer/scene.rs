@@ -1,4 +1,5 @@
 use crate::tracer::{Camera, Ray, SceneIntersectable, SceneIntersection};
+use std::sync::Arc;
 
 #[derive(Copy, Clone, Debug)]
 pub struct RenderOpts {
@@ -8,15 +9,15 @@ pub struct RenderOpts {
 
 pub struct Scene {
     pub options: RenderOpts,
-    pub camera: Box<dyn Camera>,
-    pub objects: Box<dyn SceneIntersectable>,
+    pub camera: Arc<dyn Camera>,
+    pub objects: Arc<dyn SceneIntersectable>,
 }
 
 impl Scene {
     pub fn new(
         options: RenderOpts,
-        camera: Box<dyn Camera>,
-        objects: Box<dyn SceneIntersectable>,
+        camera: Arc<dyn Camera>,
+        objects: Arc<dyn SceneIntersectable>,
     ) -> Scene {
         Scene {
             options,

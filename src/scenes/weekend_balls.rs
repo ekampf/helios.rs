@@ -1,3 +1,4 @@
+use crate::tracer::bounding_volumes::BVHNode;
 use crate::tracer::geometry::Sphere;
 use crate::tracer::materials::{Dielectric, Lambertian, Material, Metal};
 use crate::tracer::{Camera, RenderOpts, Scene, SceneObjectList, SimpleCamera};
@@ -9,7 +10,7 @@ fn rand() -> f64 {
     rand::thread_rng().gen()
 }
 
-fn get_camera(width: u64, height: u64) -> Box<dyn Camera> {
+fn get_camera(width: u64, height: u64) -> Arc<dyn Camera> {
     let width = width as f64;
     let height = height as f64;
 
@@ -29,7 +30,7 @@ fn get_camera(width: u64, height: u64) -> Box<dyn Camera> {
         focus_dist,
     );
 
-    Box::new(camera)
+    Arc::new(camera)
 }
 
 pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
@@ -39,7 +40,7 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
         samples: samples as u32,
     };
 
-    let mut objects = Box::new(SceneObjectList::new());
+    let mut objects = SceneObjectList::new();
 
     let bg_sphere = Sphere {
         center: Point3::new(0.0, -1000.0, 0.0),
@@ -99,5 +100,7 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
         material: Arc::new(Lambertian::new(vec3(0.4, 0.2, 0.1))),
     }));
 
-    Scene::new(render_options, camera, objects)
+    let bvh = BVHNode::build(objects.objects);
+    Scene::new(render_options, camera, Arc::new(bvh))
+    //    Scene::new(render_options, camera, Arc::new(objects))
 }

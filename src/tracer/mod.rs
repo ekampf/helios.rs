@@ -8,6 +8,7 @@ mod scene;
 mod scene_object;
 mod scene_object_list;
 
+pub mod bounding_volumes;
 pub mod geometry;
 pub mod materials;
 

@@ -1,3 +1,4 @@
+use crate::tracer::bounding_volumes::{Boundable, AABB};
 use crate::tracer::materials::Material;
 use crate::tracer::{Intersectable, Intersection, Point3f, Ray, SceneObject};
 use cgmath::*;
@@ -49,5 +50,22 @@ impl Intersectable for Sphere {
 impl SceneObject for Sphere {
     fn get_material(&self, _point: Point3f) -> Box<Arc<dyn Material>> {
         Box::new(self.material.clone())
+    }
+}
+
+impl Boundable for Sphere {
+    fn get_bounds(&self) -> AABB {
+        AABB::new(
+            vec3(
+                &self.center.x - &self.radius,
+                &self.center.y - &self.radius,
+                &self.center.z - &self.radius,
+            ),
+            vec3(
+                &self.center.x + &self.radius,
+                &self.center.y + &self.radius,
+                &self.center.z + &self.radius,
+            ),
+        )
     }
 }

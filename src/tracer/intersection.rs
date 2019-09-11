@@ -1,6 +1,10 @@
-use crate::tracer::{Point3f, Vector3f};
+use crate::tracer::{Point3f, Ray, Vector3f};
 use std::cmp;
 use std::fmt;
+
+pub trait Intersectable: Sync {
+    fn intersects(&self, ray: &Ray, dist_min: f64, dist_max: f64) -> Option<Intersection>;
+}
 
 #[derive(Clone)]
 pub struct Intersection {

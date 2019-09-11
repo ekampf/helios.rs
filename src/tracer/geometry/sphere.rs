@@ -1,5 +1,5 @@
 use crate::tracer::materials::Material;
-use crate::tracer::{Geometry, Intersectable, Intersection, Point3f, Ray};
+use crate::tracer::{Intersectable, Intersection, Point3f, Ray, SceneObject};
 use cgmath::*;
 use std::sync::Arc;
 
@@ -46,7 +46,7 @@ impl Intersectable for Sphere {
     }
 }
 
-impl Geometry for Sphere {
+impl SceneObject for Sphere {
     fn get_material(&self, _point: Point3f) -> Box<Arc<dyn Material>> {
         Box::new(self.material.clone())
     }

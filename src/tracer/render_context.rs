@@ -1,4 +1,4 @@
-use crate::tracer::{Color, Ray, Scene};
+use crate::tracer::{Color, Ray, Scene, SceneIntersectable};
 use cgmath::*;
 use image::ImageBuffer;
 use indicatif::ProgressBar;
@@ -233,7 +233,6 @@ impl RenderTask {
         if let Some(intersection) = maybe_intersection {
             let material = intersection
                 .object
-                .geometry
                 .get_material(intersection.intersection.point);
 
             if depth < scene.options.max_depth {

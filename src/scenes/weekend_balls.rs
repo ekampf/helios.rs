@@ -1,6 +1,6 @@
 use crate::tracer::geometry::Sphere;
 use crate::tracer::materials::{Dielectric, Lambertian, Material, Metal};
-use crate::tracer::{Camera, RenderOpts, Scene, SimpleCamera};
+use crate::tracer::{Camera, RenderOpts, Scene, SceneObjectList, SimpleCamera};
 use cgmath::*;
 use rand::Rng;
 use std::sync::Arc;
@@ -38,14 +38,15 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
         max_depth: 50,
         samples: samples as u32,
     };
-    let mut scene = Scene::new(camera, render_options);
+
+    let mut objects = Box::new(SceneObjectList::new());
 
     let bg_sphere = Sphere {
         center: Point3::new(0.0, -1000.0, 0.0),
         radius: 1000.0,
         material: Arc::new(Lambertian::new(vec3(0.5, 0.5, 0.5))),
     };
-    scene.push(Box::new(bg_sphere));
+    objects.push(Arc::new(bg_sphere));
 
     for a in -11..11 {
         for b in -11..11 {
@@ -77,26 +78,26 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
                     radius,
                     material: material,
                 };
-                scene.push(Box::new(sphere));
+                objects.push(Arc::new(sphere));
             }
         }
     }
 
-    scene.push(Box::new(Sphere {
+    objects.push(Arc::new(Sphere {
         center: Point3::new(4.0, 1.0, 0.0),
         radius: 1.0,
         material: Arc::new(Dielectric::new_diamond()),
     }));
-    scene.push(Box::new(Sphere {
+    objects.push(Arc::new(Sphere {
         center: Point3::new(0.0, 1.0, 0.0),
         radius: 1.0,
         material: Arc::new(Metal::new(vec3(0.8, 0.6, 0.5), 0.8)),
     }));
-    scene.push(Box::new(Sphere {
+    objects.push(Arc::new(Sphere {
         center: Point3::new(-4.0, 1.0, 0.0),
         radius: 1.0,
         material: Arc::new(Lambertian::new(vec3(0.4, 0.2, 0.1))),
     }));
 
-    return scene;
+    Scene::new(render_options, camera, objects)
 }

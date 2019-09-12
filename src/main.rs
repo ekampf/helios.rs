@@ -14,6 +14,9 @@ mod tracer;
 enum Cli {
     #[structopt(name = "render")]
     Render {
+        #[structopt(name = "scene_name")]
+        scene_name: render_cmd::SceneNames,
+
         #[structopt(name = "out")]
         output: PathBuf,
 
@@ -42,6 +45,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match args {
         Cli::Render {
+            scene_name,
             output,
             width,
             height,
@@ -53,7 +57,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let name = env!("CARGO_PKG_NAME");
             verbose.setup_env_logger(name)?;
 
-            let result = render_cmd::render(&output, width, height, samples, threads);
+            let result = render_cmd::render(scene_name, &output, width, height, samples, threads);
 
             if open {
                 opener::open(output)?;

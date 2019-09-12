@@ -3,7 +3,23 @@ use crate::tracer::*;
 use console::{style, Emoji};
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::current_num_threads;
+use serde::*;
 use std::path::PathBuf;
+use std::str::FromStr;
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum SceneNames {
+    WeekendBalls,
+    TwoSpheresPerlin,
+}
+
+impl FromStr for SceneNames {
+    type Err = serde_json::error::Error;
+    fn from_str(s: &str) -> Result<SceneNames, serde_json::error::Error> {
+        Ok(serde_json::from_str(&format!("\"{}\"", s))?)
+    }
+}
 
 fn init_thread_pool(threads: Option<usize>) -> usize {
     match threads {
@@ -24,6 +40,7 @@ static SPARKLE: Emoji<'_, '_> = Emoji("✨ ", ":-)");
 static RENDER: Emoji<'_, '_> = Emoji("🖼️  ", "");
 
 pub fn render(
+    scene_name: SceneNames,
     output: &PathBuf,
     width: u64,
     height: u64,
@@ -40,7 +57,12 @@ pub fn render(
 
     println!("{} {}Loading scene...", style("[2/4]").bold().dim(), SCENE);
 
-    let scene = scenes::weekend_balls::get_scene(width, height, samples);
+    let scene = match scene_name {
+        SceneNames::WeekendBalls => scenes::weekend_balls::get_scene(width, height, samples),
+        SceneNames::TwoSpheresPerlin => {
+            scenes::two_spheres_perlin::get_scene(width, height, samples)
+        }
+    };
 
     println!(
         "{} {}Initializing render context scene...",

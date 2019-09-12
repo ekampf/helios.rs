@@ -10,7 +10,7 @@ mod scene_object_list;
 
 pub mod bounding_volumes;
 pub mod geometry;
-pub mod materials;
+pub mod material;
 
 pub use camera::*;
 pub use color::*;

@@ -1,5 +1,5 @@
 use super::utils::reflect;
-use super::{Material, ScatteredRay};
+use crate::tracer::material::{Material, ScatteredRay};
 use crate::tracer::math::random_point_on_unit_sphere;
 use crate::tracer::{Intersection, Ray, Vector3f};
 use cgmath::*;

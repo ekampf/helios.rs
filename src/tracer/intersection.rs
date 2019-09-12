@@ -11,6 +11,7 @@ pub struct Intersection {
     pub dist: f64,
     pub point: Point3f,
     pub normal: Vector3f,
+    pub uv: (f64, f64),
 }
 
 impl cmp::PartialEq for Intersection {

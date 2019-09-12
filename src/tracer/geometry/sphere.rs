@@ -1,8 +1,11 @@
 use crate::tracer::bounding_volumes::{Boundable, AABB};
-use crate::tracer::materials::Material;
-use crate::tracer::{Intersectable, Intersection, Point3f, Ray, SceneObject};
+use crate::tracer::material::Material;
+use crate::tracer::{Intersectable, Intersection, Point3f, Ray, SceneObject, Vector3f};
 use cgmath::*;
+use std::f64::consts::{FRAC_PI_2, PI};
 use std::sync::Arc;
+
+const TWO_PI: f64 = 2.0 * PI;
 
 pub struct Sphere {
     pub center: Point3f,
@@ -14,11 +17,26 @@ impl Sphere {
     fn get_intersection(&self, ray: &Ray, dist: f64) -> Intersection {
         let point = ray.point_at(dist);
         let normal = (point.to_vec() - self.center.to_vec()) / self.radius;
+
+        let uv = self.get_uv(normal);
         Intersection {
             dist,
             point,
             normal,
+            uv,
         }
+    }
+
+    fn get_uv(&self, normal: Vector3f) -> (f64, f64) {
+        //        float phi = atan2(p.z(), p.x());
+        //        float theta = asin(p.y());
+        //        u = 1-(phi + M_PI) / (2*M_PI);
+        //        v = (theta + M_PI/2) / M_PI;
+        let phi = normal.z.atan2(normal.x);
+        let theta = normal.y.asin();
+        let u = 1.0 - ((phi + PI) / (TWO_PI));
+        let v = (theta + FRAC_PI_2) / PI;
+        (u, v)
     }
 }
 

@@ -1,5 +1,4 @@
-use super::ScatteredRay;
-use crate::tracer::{random_point_on_unit_sphere, Intersection, Ray, Vector3f};
+use crate::tracer::Vector3f;
 use cgmath::*;
 
 pub fn schlick(cosine: f64, ref_idx: f64) -> f64 {
@@ -23,13 +22,4 @@ pub fn refract(v: Vector3f, n: Vector3f, ni_over_nt: f64) -> Option<Vector3f> {
     }
 
     None
-}
-
-pub fn scatter_lambertian(albedo: Vector3f, hit: &Intersection) -> ScatteredRay {
-    let reflection = Ray::new(hit.point, hit.normal + random_point_on_unit_sphere());
-
-    ScatteredRay {
-        attenuation: albedo,
-        ray: reflection,
-    }
 }

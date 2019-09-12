@@ -1,4 +1,5 @@
 use crate::tracer::Vector3f;
+use cgmath::*;
 use std::fmt;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign};
 
@@ -20,6 +21,10 @@ impl Color {
 
     pub fn from_vec3f(v: Vector3f) -> Color {
         Color::new(v.x, v.y, v.z)
+    }
+
+    pub fn to_vec3f(&self) -> Vector3f {
+        vec3(self.red, self.green, self.blue)
     }
 
     pub fn sqrt(&self) -> Color {

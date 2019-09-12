@@ -1,7 +1,7 @@
 use crate::tracer::bounding_volumes::BVHNode;
 use crate::tracer::geometry::Sphere;
-use crate::tracer::materials::{Dielectric, Lambertian, Material, Metal};
-use crate::tracer::{Camera, RenderOpts, Scene, SceneObjectList, SimpleCamera};
+use crate::tracer::material::{CheckersTexture, Dielectric, Lambertian, Material, Metal};
+use crate::tracer::{Camera, Color, RenderOpts, Scene, SceneObjectList, SimpleCamera};
 use cgmath::*;
 use rand::Rng;
 use std::sync::Arc;
@@ -42,10 +42,16 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
 
     let mut objects = SceneObjectList::new();
 
+    let checkers_texture = Arc::new(CheckersTexture::from_colors(
+        Color::new(0.2, 0.3, 0.6),
+        Color::new(0.99, 0.99, 0.99),
+        0.025,
+    ));
+
     let bg_sphere = Sphere {
         center: Point3::new(0.0, -1000.0, 0.0),
         radius: 1000.0,
-        material: Arc::new(Lambertian::new(vec3(0.5, 0.5, 0.5))),
+        material: Arc::new(Lambertian::new(checkers_texture)),
     };
     objects.push(Arc::new(bg_sphere));
 
@@ -62,8 +68,8 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
             if v.magnitude() > 0.9 {
                 let material: Arc<dyn Material + Send>;
                 if random_mat < 0.8 {
-                    let albedo = vec3(rand() * rand(), rand() * rand(), rand() * rand());
-                    material = Arc::new(Lambertian::new(albedo));
+                    let albedo = Color::new(rand() * rand(), rand() * rand(), rand() * rand());
+                    material = Arc::new(Lambertian::from_constant(albedo));
                 } else if random_mat < 0.95 {
                     let albedo = vec3(
                         0.5 * (1.0 + rand()),
@@ -87,7 +93,7 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     objects.push(Arc::new(Sphere {
         center: Point3::new(4.0, 1.0, 0.0),
         radius: 1.0,
-        material: Arc::new(Dielectric::new_diamond()),
+        material: Arc::new(Dielectric::new_glass()),
     }));
     objects.push(Arc::new(Sphere {
         center: Point3::new(0.0, 1.0, 0.0),
@@ -97,7 +103,7 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     objects.push(Arc::new(Sphere {
         center: Point3::new(-4.0, 1.0, 0.0),
         radius: 1.0,
-        material: Arc::new(Lambertian::new(vec3(0.4, 0.2, 0.1))),
+        material: Arc::new(Lambertian::from_constant(Color::new(0.4, 0.2, 0.1))),
     }));
 
     let bvh = BVHNode::build(objects.objects);

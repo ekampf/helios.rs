@@ -1,5 +1,5 @@
 use super::utils::*;
-use super::{Material, ScatteredRay};
+use crate::tracer::material::{Material, ScatteredRay};
 use crate::tracer::{Intersection, Ray};
 use cgmath::*;
 use rand::prelude::*;

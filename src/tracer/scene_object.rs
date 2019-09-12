@@ -1,5 +1,5 @@
 use crate::tracer::bounding_volumes::Boundable;
-use crate::tracer::materials::Material;
+use crate::tracer::material::Material;
 use crate::tracer::{Intersectable, Intersection, Point3f, Ray};
 use std::sync::Arc;
 

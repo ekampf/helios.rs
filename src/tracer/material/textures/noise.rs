@@ -1,7 +1,7 @@
 use crate::tracer::material::Texture;
 use crate::tracer::{Point3f, Vector3f};
 use cgmath::*;
-use noise::{NoiseFn, Perlin, Point3 as NPoint3};
+use noise::{NoiseFn, Perlin};
 
 pub struct NoiseTexture {
     scale: f64,
@@ -18,7 +18,7 @@ impl NoiseTexture {
 }
 
 impl Texture for NoiseTexture {
-    fn texture_value(&self, u: f64, v: f64, p: Point3f) -> Vector3f {
+    fn texture_value(&self, _u: f64, _v: f64, p: Point3f) -> Vector3f {
         let sp = p * self.scale;
         let v1 = vec3(1.0, 1.0, 1.0);
         v1 * self.noise.get([sp.x, sp.y, sp.z])

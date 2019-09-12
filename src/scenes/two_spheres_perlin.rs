@@ -1,16 +1,9 @@
 use crate::tracer::bounding_volumes::BVHNode;
 use crate::tracer::geometry::Sphere;
-use crate::tracer::material::{
-    CheckersTexture, Dielectric, Lambertian, Material, Metal, NoiseTexture,
-};
+use crate::tracer::material::{CheckersTexture, Lambertian, NoiseTexture};
 use crate::tracer::{Camera, Color, RenderOpts, Scene, SceneObjectList, SimpleCamera};
 use cgmath::*;
-use rand::Rng;
 use std::sync::Arc;
-
-fn rand() -> f64 {
-    rand::thread_rng().gen()
-}
 
 fn get_camera(width: u64, height: u64) -> Arc<dyn Camera> {
     let width = width as f64;

@@ -1,10 +1,10 @@
 #[macro_use]
 extern crate criterion;
-extern crate rustybeam;
+extern crate helios;
 
 use criterion::Criterion;
-use rustybeam::scenes;
-use rustybeam::tracer::*;
+use helios::scenes;
+use helios::tracer::*;
 use std::time::Duration;
 
 fn balls_benchmark_impl() {

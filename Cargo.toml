@@ -1,5 +1,5 @@
 [package]
-name = "rustybeam"
+name = "helios"
 version = "0.1.0"
 authors = ["Eran Kampf <e.kampf@anchorfree.com>"]
 edition = "2018"

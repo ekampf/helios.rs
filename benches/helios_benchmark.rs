@@ -19,7 +19,7 @@ fn weekend_spheres_benchmark_impl() {
 
 fn weekend_spheres_benchmark(c: &mut Criterion) {
     c.bench_function("balls_benchmark_impl", |b| {
-        b.iter(|| balls_benchmark_impl())
+        b.iter(|| weekend_spheres_benchmark_impl())
     });
     //    c.bench_function("balls_benchmark_impl", |_| balls_benchmark_impl());
 }

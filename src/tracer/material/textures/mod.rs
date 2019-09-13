@@ -1,7 +1,8 @@
 mod checkers;
 mod noise;
+mod noises;
 mod solid;
 
-pub use self::noise::*;
 pub use checkers::*;
+pub use noise::*;
 pub use solid::*;

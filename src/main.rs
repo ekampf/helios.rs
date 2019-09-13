@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use structopt::StructOpt;
 
+mod noise_cmd;
 mod render_cmd;
 mod scenes;
 mod tracer;
@@ -38,6 +39,11 @@ enum Cli {
         #[structopt(long = "open", short = "o")]
         open: bool,
     },
+    #[structopt(name = "noise")]
+    Noise {
+        #[structopt(name = "out")]
+        output: PathBuf,
+    },
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -65,5 +71,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             result
         }
+        Cli::Noise { output } => noise_cmd::render(output),
     }
 }

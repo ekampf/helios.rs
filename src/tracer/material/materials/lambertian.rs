@@ -1,5 +1,5 @@
 use crate::tracer::material::{Material, ScatteredRay, SolidTexture, Texture};
-use crate::tracer::{random_point_on_unit_sphere, Color, Intersection, Ray};
+use crate::tracer::{random_in_unit_sphere, Color, Intersection, Ray};
 use std::sync::Arc;
 
 // Lambertian (diffuse) Material.
@@ -23,7 +23,7 @@ impl Lambertian {
 
 impl Material for Lambertian {
     fn scatter(&self, _ray_in: &Ray, hit: &Intersection) -> Option<ScatteredRay> {
-        let reflection = Ray::new(hit.point, hit.normal + random_point_on_unit_sphere());
+        let reflection = Ray::new(hit.point, hit.normal + random_in_unit_sphere());
         let (u, v) = hit.uv;
         let attenuation = self.albedo.texture_value(u, v, reflection.origin);
 

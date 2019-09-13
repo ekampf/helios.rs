@@ -1,4 +1,4 @@
-use crate::tracer::{random_point_on_unit_sphere, Point3f, Ray, Vector3f};
+use crate::tracer::{random_in_unit_sphere, Point3f, Ray, Vector3f};
 use cgmath::*;
 use std::f64::consts::PI;
 use std::fmt;
@@ -66,7 +66,7 @@ impl SimpleCamera {
 
 impl Camera for SimpleCamera {
     fn get_ray(&self, u: f64, v: f64) -> Ray {
-        let rd = self.lens_radius * random_point_on_unit_sphere();
+        let rd = self.lens_radius * random_in_unit_sphere();
         let offset = (u * rd.x) + (v * rd.y);
         let offset_vec = vec3(offset, offset, offset);
 

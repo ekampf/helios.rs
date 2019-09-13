@@ -1,9 +1,27 @@
 use crate::tracer::bounding_volumes::BVHNode;
 use crate::tracer::geometry::Sphere;
-use crate::tracer::material::{CheckersTexture, Lambertian, NoiseTexture};
-use crate::tracer::{Camera, Color, RenderOpts, Scene, SceneObjectList, SimpleCamera};
+use crate::tracer::material::{CheckersTexture, Lambertian, Material, NoiseTexture, ScatteredRay};
+use crate::tracer::{
+    Camera, Color, Intersection, Point3f, Ray, RenderOpts, Scene, SceneObjectList, SimpleCamera,
+    Vector3f,
+};
 use cgmath::*;
 use std::sync::Arc;
+
+struct SkyMaterial {}
+
+impl Material for SkyMaterial {
+    fn scatter(&self, _ray_in: &Ray, _hit: &Intersection) -> Option<ScatteredRay> {
+        None
+    }
+
+    fn emitted(&self, ray_in: &Ray, _u: f64, _v: f64, _p: Point3f) -> Vector3f {
+        let unit_v = vec3(1.0, 1.0, 1.0);
+        let unit_dir = ray_in.direction.normalize();
+        let t = 0.5 * (unit_dir.y + 1.0);
+        unit_v * (1.0 - t) + vec3(0.5, 0.7, 1.0) * t
+    }
+}
 
 fn get_camera(width: u64, height: u64) -> Arc<dyn Camera> {
     let width = width as f64;
@@ -59,5 +77,10 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     }));
 
     let bvh = BVHNode::build(objects.objects);
-    Scene::new(render_options, camera, Arc::new(bvh))
+    Scene::new(
+        render_options,
+        camera,
+        Arc::new(bvh),
+        Arc::new(SkyMaterial {}),
+    )
 }

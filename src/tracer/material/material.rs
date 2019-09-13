@@ -13,7 +13,7 @@ pub struct ScatteredRay {
 pub trait Material: Sync + Send {
     fn scatter(&self, ray_in: &Ray, hit: &Intersection) -> Option<ScatteredRay>;
 
-    fn emitted(&self, u: f64, v: f64, p: Point3f) -> Vector3f {
+    fn emitted(&self, _ray_in: &Ray, _u: f64, _v: f64, _p: Point3f) -> Vector3f {
         return vec3(0.0, 0.0, 0.0);
     }
 }

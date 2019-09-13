@@ -1,3 +1,4 @@
+use crate::tracer::material::Material;
 use crate::tracer::{Camera, Ray, SceneIntersectable, SceneIntersection};
 use std::sync::Arc;
 
@@ -11,6 +12,7 @@ pub struct Scene {
     pub options: RenderOpts,
     pub camera: Arc<dyn Camera>,
     pub objects: Arc<dyn SceneIntersectable>,
+    pub background: Arc<dyn Material>,
 }
 
 impl Scene {
@@ -18,11 +20,13 @@ impl Scene {
         options: RenderOpts,
         camera: Arc<dyn Camera>,
         objects: Arc<dyn SceneIntersectable>,
+        background: Arc<dyn Material>,
     ) -> Scene {
         Scene {
             options,
             camera,
             objects,
+            background,
         }
     }
 }

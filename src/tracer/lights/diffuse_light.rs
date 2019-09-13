@@ -13,11 +13,11 @@ impl DiffuseLight {
 }
 
 impl Material for DiffuseLight {
-    fn scatter(&self, ray_in: &Ray, hit: &Intersection) -> Option<ScatteredRay> {
+    fn scatter(&self, _ray_in: &Ray, _hit: &Intersection) -> Option<ScatteredRay> {
         None
     }
 
-    fn emitted(&self, u: f64, v: f64, p: Point3f) -> Vector3f {
+    fn emitted(&self, _ray_in: &Ray, u: f64, v: f64, p: Point3f) -> Vector3f {
         self.texture.texture_value(u, v, p)
     }
 }

@@ -71,5 +71,10 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     }));
 
     let bvh = BVHNode::build(objects.objects);
-    Scene::new(render_options, camera, Arc::new(bvh))
+    Scene::new(
+        render_options,
+        camera,
+        Arc::new(bvh),
+        Arc::new(Lambertian::from_constant(Color::black())),
+    )
 }

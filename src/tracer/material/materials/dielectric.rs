@@ -28,6 +28,7 @@ impl Dielectric {
     }
 
     /// Create a Dielectric material with reflective index of 2.35-245
+    #[allow(dead_code)]
     pub fn new_diamond() -> Dielectric {
         let mut rng = rand::thread_rng();
         let reflective_idx: f64 = rng.gen_range(2.35, 2.45);

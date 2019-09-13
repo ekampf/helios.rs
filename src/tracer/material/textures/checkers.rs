@@ -9,6 +9,7 @@ pub struct CheckersTexture {
 }
 
 impl CheckersTexture {
+    #[allow(dead_code)]
     pub fn new(odd: Arc<dyn Texture>, even: Arc<dyn Texture>, scale: f64) -> CheckersTexture {
         CheckersTexture { odd, even, scale }
     }

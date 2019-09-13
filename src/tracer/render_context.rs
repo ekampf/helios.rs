@@ -1,5 +1,4 @@
-use crate::tracer::{Color, Ray, Scene, SceneIntersectable};
-use cgmath::*;
+use crate::tracer::{Color, Point3f, Ray, Scene, SceneIntersectable};
 use image::ImageBuffer;
 use indicatif::ProgressBar;
 use itertools::Itertools;
@@ -233,17 +232,14 @@ impl RenderTask {
     fn cast_ray(ray: &Ray, scene: &Scene, rng: &mut ThreadRng, depth: u32) -> Color {
         let maybe_intersection = scene.intersect(ray, 0.001, std::f64::MAX);
 
-        let unit_v = vec3(1.0, 1.0, 1.0);
-
         if let Some(intersection) = maybe_intersection {
             let material = intersection
                 .object
                 .get_material(intersection.intersection.point);
 
-            let object = intersection.object;
             let intersection = intersection.intersection;
             let (u, v) = intersection.uv;
-            let emitted = material.emitted(u, v, intersection.point);
+            let emitted = material.emitted(ray, u, v, intersection.point);
 
             if depth < scene.options.max_depth {
                 if let Some(ref scatter) = material.scatter(ray, &intersection) {
@@ -257,10 +253,10 @@ impl RenderTask {
             return Color::from_vec3f(emitted);
         }
 
-        // TODO: this renders sky. Should refactor this out to the Scene object
-        //        let unit_dir = ray.direction.normalize();
-        //        let t = 0.5 * (unit_dir.y + 1.0);
-        //        Color::from_vec3f(unit_v * (1.0 - t) + vec3(0.5, 0.7, 1.0) * t)
-        Color::black()
+        Color::from_vec3f(
+            scene
+                .background
+                .emitted(ray, 0.0, 0.0, Point3f::new(0.0, 0.0, 0.0)),
+        )
     }
 }

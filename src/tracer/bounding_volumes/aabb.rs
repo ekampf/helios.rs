@@ -28,6 +28,7 @@ impl AABB {
         AABB { min, max }
     }
 
+    #[allow(dead_code)]
     pub fn contains_point(self, p: Vector3f) -> bool {
         if p.x < self.min.x || p.x > self.max.x {
             return false;

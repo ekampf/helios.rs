@@ -1,8 +1,8 @@
 use crate::tracer::bounding_volumes::BVHNode;
 use crate::tracer::geometry::Sphere;
-use crate::tracer::lights::DiffuseLight;
-use crate::tracer::material::SolidTexture;
-use crate::tracer::material::{CheckersTexture, Lambertian, NoiseTexture};
+use crate::tracer::material::{
+    CheckersTexture, DiffuseLight, Lambertian, NoiseTexture, SolidTexture,
+};
 use crate::tracer::{Camera, Color, RenderOpts, Scene, SceneObjectList, SimpleCamera};
 use cgmath::*;
 use std::sync::Arc;

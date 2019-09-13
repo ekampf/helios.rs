@@ -10,9 +10,9 @@ use std::str::FromStr;
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum SceneNames {
-    WeekendBalls,
+    WeekendSpheres,
     TwoSpheresPerlin,
-    ThreeSpheresLight,
+    TwoSpheresLight,
 }
 
 impl FromStr for SceneNames {
@@ -59,13 +59,11 @@ pub fn render(
     println!("{} {}Loading scene...", style("[2/4]").bold().dim(), SCENE);
 
     let scene = match scene_name {
-        SceneNames::WeekendBalls => scenes::weekend_balls::get_scene(width, height, samples),
+        SceneNames::WeekendSpheres => scenes::weekend_spheres::get_scene(width, height, samples),
         SceneNames::TwoSpheresPerlin => {
             scenes::two_spheres_perlin::get_scene(width, height, samples)
         }
-        SceneNames::ThreeSpheresLight => {
-            scenes::three_spheres_light::get_scene(width, height, samples)
-        }
+        SceneNames::TwoSpheresLight => scenes::two_spheres_light::get_scene(width, height, samples),
     };
 
     println!(

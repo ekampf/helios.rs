@@ -31,5 +31,5 @@ noise = "0.5.1"
 criterion = "0.3"
 
 [[bench]]
-name = "ballsweekend_benchmark"
+name = "helios_benchmark"
 harness = false

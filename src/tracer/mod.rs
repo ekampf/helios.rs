@@ -11,7 +11,6 @@ mod scene_object_list;
 
 pub mod bounding_volumes;
 pub mod geometry;
-pub mod lights;
 pub mod material;
 
 pub use camera::*;

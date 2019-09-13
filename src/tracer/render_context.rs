@@ -240,20 +240,27 @@ impl RenderTask {
                 .object
                 .get_material(intersection.intersection.point);
 
+            let object = intersection.object;
+            let intersection = intersection.intersection;
+            let (u, v) = intersection.uv;
+            let emitted = material.emitted(u, v, intersection.point);
+
             if depth < scene.options.max_depth {
-                if let Some(ref scatter_ray) = material.scatter(ray, &intersection.intersection) {
-                    let attenution = scatter_ray.attenuation;
-                    let color = RenderTask::cast_ray(&scatter_ray.ray, scene, rng, depth + 1);
-                    return color * attenution;
+                if let Some(ref scatter) = material.scatter(ray, &intersection) {
+                    let attenution = scatter.attenuation;
+                    let color = RenderTask::cast_ray(&scatter.ray, scene, rng, depth + 1);
+                    return (color * attenution) + emitted;
                 }
+                return Color::from_vec3f(emitted);
             }
 
-            return Color::black();
+            return Color::from_vec3f(emitted);
         }
 
         // TODO: this renders sky. Should refactor this out to the Scene object
-        let unit_dir = ray.direction.normalize();
-        let t = 0.5 * (unit_dir.y + 1.0);
-        return Color::from_vec3f(unit_v * (1.0 - t) + vec3(0.5, 0.7, 1.0) * t);
+        //        let unit_dir = ray.direction.normalize();
+        //        let t = 0.5 * (unit_dir.y + 1.0);
+        //        Color::from_vec3f(unit_v * (1.0 - t) + vec3(0.5, 0.7, 1.0) * t)
+        Color::black()
     }
 }

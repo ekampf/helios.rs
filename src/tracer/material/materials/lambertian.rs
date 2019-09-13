@@ -24,9 +24,8 @@ impl Lambertian {
 impl Material for Lambertian {
     fn scatter(&self, _ray_in: &Ray, hit: &Intersection) -> Option<ScatteredRay> {
         let reflection = Ray::new(hit.point, hit.normal + random_point_on_unit_sphere());
-        let attenuation = self
-            .albedo
-            .texture_value(hit.uv.0, hit.uv.1, reflection.origin);
+        let (u, v) = hit.uv;
+        let attenuation = self.albedo.texture_value(u, v, reflection.origin);
 
         let scatter = ScatteredRay {
             attenuation,

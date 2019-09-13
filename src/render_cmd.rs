@@ -12,6 +12,7 @@ use std::str::FromStr;
 pub enum SceneNames {
     WeekendBalls,
     TwoSpheresPerlin,
+    ThreeSpheresLight,
 }
 
 impl FromStr for SceneNames {
@@ -61,6 +62,9 @@ pub fn render(
         SceneNames::WeekendBalls => scenes::weekend_balls::get_scene(width, height, samples),
         SceneNames::TwoSpheresPerlin => {
             scenes::two_spheres_perlin::get_scene(width, height, samples)
+        }
+        SceneNames::ThreeSpheresLight => {
+            scenes::three_spheres_light::get_scene(width, height, samples)
         }
     };
 

@@ -60,17 +60,20 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
             let a = a as f64;
             let b = b as f64;
 
-            let random_mat: f64 = rand();
             let center = Point3::new(a + 0.9 * rand(), 0.2, b + 0.9 * rand());
             let v = center.to_vec() - vec3(4.0, 0.2, 0.0);
 
             let radius = 0.2;
             if v.magnitude() > 0.9 {
                 let material: Arc<dyn Material + Send>;
+
+                let random_mat: f64 = rand();
                 if random_mat < 0.8 {
+                    // Diffuse material
                     let albedo = Color::new(rand() * rand(), rand() * rand(), rand() * rand());
                     material = Arc::new(Lambertian::from_constant(albedo));
                 } else if random_mat < 0.95 {
+                    // Metal
                     let albedo = vec3(
                         0.5 * (1.0 + rand()),
                         0.5 * (1.0 + rand()),
@@ -78,6 +81,7 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
                     );
                     material = Arc::new(Metal::new(albedo, 0.5 * rand()));
                 } else {
+                    // Glass
                     material = Arc::new(Dielectric::new_glass());
                 }
                 let sphere = Sphere {
@@ -93,12 +97,12 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     objects.push(Arc::new(Sphere {
         center: Point3::new(4.0, 1.0, 0.0),
         radius: 1.0,
-        material: Arc::new(Dielectric::new_glass()),
+        material: Arc::new(Metal::new(vec3(0.7, 0.6, 0.5), 0.0)),
     }));
     objects.push(Arc::new(Sphere {
         center: Point3::new(0.0, 1.0, 0.0),
         radius: 1.0,
-        material: Arc::new(Metal::new(vec3(0.8, 0.6, 0.5), 0.8)),
+        material: Arc::new(Dielectric::new_glass()),
     }));
     objects.push(Arc::new(Sphere {
         center: Point3::new(-4.0, 1.0, 0.0),

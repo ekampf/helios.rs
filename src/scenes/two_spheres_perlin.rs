@@ -1,7 +1,10 @@
 use crate::tracer::bounding_volumes::BVHNode;
 use crate::tracer::geometry::Sphere;
-use crate::tracer::material::{CheckersTexture, Lambertian};
-use crate::tracer::{Camera, Color, RenderOpts, Scene, SceneObjectList, SimpleCamera};
+use crate::tracer::material::{CheckersTexture, Lambertian, Material, ScatteredRay};
+use crate::tracer::{
+    Camera, Color, Intersection, Point3f, Ray, RenderOpts, Scene, SceneObjectList, SimpleCamera,
+    Vector3f,
+};
 use cgmath::*;
 use std::sync::Arc;
 

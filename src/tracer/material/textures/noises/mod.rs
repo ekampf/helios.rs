@@ -1,3 +1,5 @@
 mod perlin;
+//mod permutation_table;
 
-use perlin::*;
+pub use perlin::*;
+//use permutation_table::*;

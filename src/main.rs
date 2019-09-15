@@ -44,17 +44,20 @@ enum Cli {
         #[structopt(name = "out")]
         output: PathBuf,
 
-        #[structopt(long = "frequency", short = "f", default_value = "0.02")]
-        frequency: f32,
+        #[structopt(long = "scale", short = "s", default_value = "1.5")]
+        scale: f64,
 
-        #[structopt(long = "lacunarity", short = "l", default_value = "0.5")]
-        lacunarity: f32,
+        #[structopt(long = "frequency", short = "f", default_value = "1.5")]
+        frequency: f64,
 
-        #[structopt(long = "gain", short = "g", default_value = "2.0")]
-        gain: f32,
+        #[structopt(long = "lacunarity", short = "l", default_value = "2.5")]
+        lacunarity: f64,
 
-        #[structopt(long = "octaves", short = "o", default_value = "3")]
-        octaves: u8,
+        #[structopt(long = "persistency", short = "p", default_value = "0.5")]
+        persistency: f64,
+
+        #[structopt(long = "octaves", short = "o", default_value = "8")]
+        octaves: u32,
     },
 }
 
@@ -85,10 +88,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Cli::Noise {
             output,
+            scale,
             frequency,
             lacunarity,
-            gain,
+            persistency,
             octaves,
-        } => noise_cmd::render(output, frequency, lacunarity, gain, octaves),
+        } => noise_cmd::render(output, scale, frequency, lacunarity, persistency, octaves),
     }
 }

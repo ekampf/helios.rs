@@ -1,6 +1,6 @@
 use crate::tracer::bounding_volumes::BVHNode;
 use crate::tracer::geometry::Sphere;
-use crate::tracer::material::{CheckersTexture, Lambertian, Material, ScatteredRay};
+use crate::tracer::material::{CheckersTexture, Lambertian, Material, NoiseTexture, ScatteredRay};
 use crate::tracer::{
     Camera, Color, Intersection, Point3f, Ray, RenderOpts, Scene, SceneObjectList, SimpleCamera,
     Vector3f,
@@ -68,10 +68,12 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     };
     objects.push(Arc::new(bg_sphere));
 
+    let noise_texture = Arc::new(NoiseTexture::new(0.5, 8, 2.0, 0.5, 2.5));
+
     objects.push(Arc::new(Sphere {
         center: Point3::new(4.0, 1.0, 0.0),
         radius: 1.0,
-        material: Arc::new(Lambertian::new(checkers_texture.clone())),
+        material: Arc::new(Lambertian::new(noise_texture)),
     }));
 
     let bvh = BVHNode::build(objects.objects);

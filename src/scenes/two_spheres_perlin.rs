@@ -64,16 +64,16 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     let bg_sphere = Sphere {
         center: Point3::new(0.0, -1000.0, 0.0),
         radius: 1000.0,
-        material: Arc::new(Lambertian::new(checkers_texture)),
+        material: Arc::new(Lambertian::new(checkers_texture.clone())),
     };
     objects.push(Arc::new(bg_sphere));
 
-    let noiset = Arc::new(NoiseTexture::new(5.0));
+    let noise_texture = Arc::new(NoiseTexture::new(2.0, 7, 1.0, 0.5, 2.0));
 
     objects.push(Arc::new(Sphere {
         center: Point3::new(4.0, 1.0, 0.0),
         radius: 1.0,
-        material: Arc::new(Lambertian::new(noiset)),
+        material: Arc::new(Lambertian::new(noise_texture)),
     }));
 
     let bvh = BVHNode::build(objects.objects);

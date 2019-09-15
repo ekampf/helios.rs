@@ -1,8 +1,6 @@
 use crate::tracer::bounding_volumes::BVHNode;
 use crate::tracer::geometry::Sphere;
-use crate::tracer::material::{
-    CheckersTexture, DiffuseLight, Lambertian, NoiseTexture, SolidTexture,
-};
+use crate::tracer::material::{CheckersTexture, DiffuseLight, Lambertian, SolidTexture};
 use crate::tracer::{Camera, Color, RenderOpts, Scene, SceneObjectList, SimpleCamera};
 use cgmath::*;
 use std::sync::Arc;
@@ -57,16 +55,16 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     let bg_sphere = Sphere {
         center: Point3::new(0.0, -1000.0, 0.0),
         radius: 1000.0,
-        material: Arc::new(Lambertian::new(checkers_texture)),
+        material: Arc::new(Lambertian::new(checkers_texture.clone())),
     };
     objects.push(Arc::new(bg_sphere));
 
-    let noiset = Arc::new(NoiseTexture::new(5.0));
+    //    let noiset = Arc::new(NoiseTexture::new(5.0));
 
     objects.push(Arc::new(Sphere {
         center: Point3::new(4.0, 1.0, 0.0),
         radius: 1.0,
-        material: Arc::new(Lambertian::new(noiset)),
+        material: Arc::new(Lambertian::new(checkers_texture)),
         //        material: light,
     }));
 

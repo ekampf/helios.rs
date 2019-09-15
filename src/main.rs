@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use structopt::StructOpt;
 
+mod noise_cmd;
 mod render_cmd;
 mod scenes;
 mod tracer;
@@ -38,6 +39,26 @@ enum Cli {
         #[structopt(long = "open", short = "o")]
         open: bool,
     },
+    #[structopt(name = "noise")]
+    Noise {
+        #[structopt(name = "out")]
+        output: PathBuf,
+
+        #[structopt(long = "scale", short = "s", default_value = "1.5")]
+        scale: f64,
+
+        #[structopt(long = "frequency", short = "f", default_value = "1.5")]
+        frequency: f64,
+
+        #[structopt(long = "lacunarity", short = "l", default_value = "2.5")]
+        lacunarity: f64,
+
+        #[structopt(long = "persistency", short = "p", default_value = "0.5")]
+        persistency: f64,
+
+        #[structopt(long = "octaves", short = "o", default_value = "8")]
+        octaves: u32,
+    },
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -65,5 +86,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             result
         }
+        Cli::Noise {
+            output,
+            scale,
+            frequency,
+            lacunarity,
+            persistency,
+            octaves,
+        } => noise_cmd::render(output, scale, frequency, lacunarity, persistency, octaves),
     }
 }

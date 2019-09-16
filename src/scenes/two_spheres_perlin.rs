@@ -68,7 +68,9 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     };
     objects.push(Arc::new(bg_sphere));
 
-    let noise_texture = Arc::new(NoiseTexture::new(2.0, 7, 1.0, 0.5, 2.0));
+    let cstart = Color::black();
+    let cend = Color::new(0.75, 0.0, 0.0);
+    let noise_texture = Arc::new(NoiseTexture::new(2.0, 7, 1.0, 0.5, 2.0, cstart, cend));
 
     objects.push(Arc::new(Sphere {
         center: Point3::new(4.0, 1.0, 0.0),

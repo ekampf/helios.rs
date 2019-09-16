@@ -19,6 +19,10 @@ impl Color {
         Color::new(0.0, 0.0, 0.0)
     }
 
+    pub fn white() -> Color {
+        Color::new(1.0, 1.0, 1.0)
+    }
+
     pub fn from_vec3f(v: Vector3f) -> Color {
         Color::new(v.x, v.y, v.z)
     }

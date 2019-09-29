@@ -7,4 +7,5 @@ matrix:
   allow_failures:
     - rust: nightly
   fast_finish: true
-
+after_success:
+  - ./run-benchmarks.sh

@@ -16,6 +16,8 @@ matrix:
 after_success:
   - ./run-benchmarks.sh
 
+before_deploy:
+  - mv target/release/helios "target/release/helios-$TRAVIS_TAG-$TRAVIS_OS_NAME"
 deploy:
   - provider: releases
     skip_cleanup: true
@@ -23,6 +25,6 @@ deploy:
       tags: true
       condition: "$TRAVIS_RUST_VERSION = stable"
       branch: master
-    file: target/release/helios
+    file: target/release/helios-*
     api_token:
       secure: "t1B+KTyId9/LG+E9h+t+g7YrI3MyUk1YaVRPp7ZME6sDc854BsgphOilx+hAZRBxvlKbGBPBDW5HTDkfFzOTGN/6+X0Z2X+fE/jD2mqtC00udve3ChMulcULGsjwuny+vdnzzNDBn1gfIiqxX893t26TZLanZ9KGUeM7/+30TtF6uCj61oBlkdllIb9j1Qxk2/ElGL/dlLAEggkw8/jvS1kNsD7a15Fuar4yQLKvzskad7+8LginkAwgTo73JDENtv8tmQel/cwmJzWwmx2SYGVl+to5ZFv1u2GvvW0a810ZwxzMjKs3stUe120Y4cPS51bsI/zd0U6rZyzz2WvnBGZtggr1lYv9E9u3iBd5BA58MHJ5g6yiBEFZhkz3MBcbWPaPqGErVu27uzDpN/JUm5xasRP3ATbV9gPPe+BfdGIpfDUsGGUADXdQvWGv2DUzjxkNNEQ2mFqmzN63tJPW21K5utt1mweYLpPb6oeZfvYhy8inRjhQ83RhRuDDYZzzP/01p0swzUWf75iEtPeymE7kB2sDL2LhOU5a6SjIrA6+tQ4tRi/ZkPaGiB3CmLQldp4hLyxg4axAm7KzBJpdObfPkvouIHOrg2TJ79CGSD5FEvkvkPLgx4uTQnq5XSMXtV/qSuHsAL6u1zeXy6szLKRnXWm2uheLBFloYVjRpGY="

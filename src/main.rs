@@ -1,5 +1,7 @@
 use std::path::PathBuf;
 use structopt::StructOpt;
+use log::Level;
+use env_logger::Builder as LoggerBuilder;
 
 mod noise_cmd;
 mod render_cmd;
@@ -10,7 +12,7 @@ mod tracer;
 #[structopt(
     name = "example",
     about = "An example of StructOpt usage.",
-    raw(setting = "structopt::clap::AppSettings::ColoredHelp")
+    setting = structopt::clap::AppSettings::ColoredHelp
 )]
 enum Cli {
     #[structopt(name = "render")]
@@ -75,8 +77,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             verbose,
             open,
         } => {
-            let name = env!("CARGO_PKG_NAME");
-            verbose.setup_env_logger(name)?;
+            let level_filter = match verbose.log_level() {
+                Some(level) => level.to_level_filter(),
+                None => Level::Info.to_level_filter(),
+            };
+            LoggerBuilder::new().filter(None, level_filter).try_init()?;
 
             let result = render_cmd::render(scene_name, &output, width, height, samples, threads);
 

@@ -55,7 +55,7 @@ fn find_min_max(min: &Vector3f, max: &Vector3f, ro: &Point3f, invrd: &Vector3f) 
 
     let tmin = t1.min(t2).max(t3.min(t4)).max(t5.min(t6));
     let tmax = t1.max(t2).min(t3.max(t4)).min(t5.max(t6));
-    return (tmin, tmax);
+    (tmin, tmax)
 }
 
 impl BoundingVolume for AABB {
@@ -77,7 +77,7 @@ impl BoundingVolume for AABB {
             return false;
         }
 
-        return true;
+        true
     }
 }
 

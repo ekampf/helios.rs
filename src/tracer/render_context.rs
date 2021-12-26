@@ -52,11 +52,12 @@ impl RenderContext {
     pub fn print_stats(&self) {
         let elapsed = self.start_time.elapsed();
 
-        print!("\n==========================================\n");
-        print!("| Rays Cast: {}\n", self.rays_cast);
-        print!("| Elapsed Time (s): {:.4}\n", elapsed.as_secs_f64());
-        print!("| Rays per sec: {:.2}\n", self.rays_cast as f64 / elapsed.as_secs_f64());
-        print!("==========================================\n");
+        println!();
+        println!("==========================================");
+        println!("| Rays Cast: {}", self.rays_cast);
+        println!("| Elapsed Time (s): {:.4}\n", elapsed.as_secs_f64());
+        println!("| Rays per sec: {:.2}\n", self.rays_cast as f64 / elapsed.as_secs_f64());
+        println!("==========================================");
     }
 
     pub fn get_stats(&self) -> (u64, f64, f64) {

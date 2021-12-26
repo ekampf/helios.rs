@@ -1,7 +1,7 @@
+use env_logger::Builder as LoggerBuilder;
+use log::Level;
 use std::path::PathBuf;
 use structopt::StructOpt;
-use log::Level;
-use env_logger::Builder as LoggerBuilder;
 
 mod noise_cmd;
 mod render_cmd;

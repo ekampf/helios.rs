@@ -8,7 +8,7 @@ use rayon::prelude::*;
 use std::ops::Range;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
-use std::time::{Instant};
+use std::time::Instant;
 
 #[derive(Debug)]
 pub struct RenderContext {
@@ -45,7 +45,7 @@ impl RenderContext {
             height,
             pixels: vec![Color::black(); total_pixels as usize],
             rays_cast: 0,
-            start_time: Instant::now()
+            start_time: Instant::now(),
         }
     }
 
@@ -56,13 +56,20 @@ impl RenderContext {
         println!("==========================================");
         println!("| Rays Cast: {}", self.rays_cast);
         println!("| Elapsed Time (s): {:.4}\n", elapsed.as_secs_f64());
-        println!("| Rays per sec: {:.2}\n", self.rays_cast as f64 / elapsed.as_secs_f64());
+        println!(
+            "| Rays per sec: {:.2}\n",
+            self.rays_cast as f64 / elapsed.as_secs_f64()
+        );
         println!("==========================================");
     }
 
     pub fn get_stats(&self) -> (u64, f64, f64) {
         let elapsed = self.start_time.elapsed();
-        (self.rays_cast, elapsed.as_secs_f64(), self.rays_cast as f64 / elapsed.as_secs_f64())
+        (
+            self.rays_cast,
+            elapsed.as_secs_f64(),
+            self.rays_cast as f64 / elapsed.as_secs_f64(),
+        )
     }
 
     pub fn get_stats_message(&self) -> String {

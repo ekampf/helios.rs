@@ -44,7 +44,7 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
         center: Point3::new(4.0, 3.0, 0.0),
         radius: 1.0,
         //        material: Arc::new(Lambertian::new(noiset)),
-        material: light.clone(),
+        material: light,
     }));
     let checkers_texture = Arc::new(CheckersTexture::from_colors(
         Color::new(0.2, 0.3, 0.6),

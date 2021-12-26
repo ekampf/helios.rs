@@ -61,7 +61,7 @@ impl Intersectable for Sphere {
             return Some(self.get_intersection(ray, t));
         }
 
-        return None;
+        None
     }
 }
 

@@ -6,7 +6,7 @@ use log::info;
 use rand::prelude::*;
 use rayon::prelude::*;
 use std::ops::Range;
-use std::path::PathBuf;
+use std::path::Path;
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
 
@@ -135,7 +135,7 @@ impl RenderContext {
         let rcm = Arc::new(Mutex::new(self));
 
         render_tasks.into_par_iter().for_each_with(rcm, |rcm, t| {
-            let result = t.render(&scene, pb);
+            let result = t.render(scene, pb);
 
             let mut rc = rcm.lock().unwrap();
             rc.apply_render_result(&t, &result);
@@ -147,7 +147,7 @@ impl RenderContext {
         });
     }
 
-    pub fn save(&self, output: &PathBuf) {
+    pub fn save(&self, output: &Path) {
         let img = ImageBuffer::from_fn(self.width as u32, self.height as u32, |x, y| {
             let x = x as u64;
             let y = y as u64;
@@ -194,12 +194,12 @@ impl RenderTask {
 
         for y in self.yrange() {
             for x in self.xrange() {
-                let (cast, pixel) = self.render_pixel(x, y, &scene);
+                let (cast, pixel) = self.render_pixel(x, y, scene);
                 pixels.push(pixel);
                 rays_cast += cast;
 
-                if pb.is_some() {
-                    pb.unwrap().inc(1);
+                if let Some(pb) = pb {
+                    pb.inc(1);
                 }
             }
         }

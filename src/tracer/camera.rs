@@ -60,7 +60,7 @@ impl SimpleCamera {
             lens_radius,
         };
 
-        return camera;
+        camera
     }
 }
 

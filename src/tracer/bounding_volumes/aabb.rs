@@ -39,7 +39,8 @@ impl AABB {
         if p.z < self.min.z || p.z > self.max.z {
             return false;
         }
-        return true;
+
+        true
     }
 }
 

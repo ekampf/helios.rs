@@ -21,7 +21,7 @@ impl Ray {
     }
 
     pub fn point_at(&self, dist: f64) -> Point3f {
-        return self.origin + self.direction * dist;
+        self.origin + self.direction * dist
     }
 
     pub fn get_inverse_direction(&self) -> Vector3f {

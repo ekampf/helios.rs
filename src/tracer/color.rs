@@ -12,7 +12,7 @@ pub struct Color {
 
 impl Color {
     pub fn new(red: f64, green: f64, blue: f64) -> Color {
-        return Color { red, green, blue };
+        Color { red, green, blue }
     }
 
     pub fn black() -> Color {

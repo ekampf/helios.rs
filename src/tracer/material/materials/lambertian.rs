@@ -13,7 +13,7 @@ pub struct Lambertian {
 
 impl Lambertian {
     pub fn new(albedo: Arc<dyn Texture>) -> Lambertian {
-        return Lambertian { albedo };
+        Lambertian { albedo }
     }
     pub fn from_constant(c: Color) -> Lambertian {
         let albedo = Arc::new(SolidTexture::new(c));
@@ -32,6 +32,6 @@ impl Material for Lambertian {
             ray: reflection,
         };
 
-        return Some(scatter);
+        Some(scatter)
     }
 }

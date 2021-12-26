@@ -15,16 +15,16 @@ pub struct Dielectric {
 
 impl Dielectric {
     pub fn new(ref_idx: f64) -> Dielectric {
-        return Dielectric {
+        Dielectric {
             reflective_idx: ref_idx,
-        };
+        }
     }
 
     /// Create a Dielectric material with reflective index of 1.3-1.7
     pub fn new_glass() -> Dielectric {
         let mut rng = rand::thread_rng();
         let reflective_idx: f64 = rng.gen_range(1.3, 1.7);
-        return Dielectric::new(reflective_idx);
+        Dielectric::new(reflective_idx)
     }
 
     /// Create a Dielectric material with reflective index of 2.35-245
@@ -32,7 +32,7 @@ impl Dielectric {
     pub fn new_diamond() -> Dielectric {
         let mut rng = rand::thread_rng();
         let reflective_idx: f64 = rng.gen_range(2.35, 2.45);
-        return Dielectric::new(reflective_idx);
+        Dielectric::new(reflective_idx)
     }
 }
 
@@ -74,9 +74,9 @@ impl Material for Dielectric {
             scatter_ray_direction = reflected;
         }
 
-        return Some(ScatteredRay {
+        Some(ScatteredRay {
             attenuation,
             ray: Ray::new(hit.point, scatter_ray_direction),
-        });
+        })
     }
 }

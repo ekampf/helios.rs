@@ -16,7 +16,7 @@ pub struct Intersection {
 
 impl cmp::PartialEq for Intersection {
     fn eq(&self, other: &Intersection) -> bool {
-        &self.point == &other.point
+        self.point == other.point
     }
 }
 

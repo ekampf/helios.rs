@@ -75,14 +75,14 @@ impl Boundable for Sphere {
     fn get_bounds(&self) -> AABB {
         AABB::new(
             vec3(
-                &self.center.x - &self.radius,
-                &self.center.y - &self.radius,
-                &self.center.z - &self.radius,
+                self.center.x - self.radius,
+                self.center.y - self.radius,
+                self.center.z - self.radius,
             ),
             vec3(
-                &self.center.x + &self.radius,
-                &self.center.y + &self.radius,
-                &self.center.z + &self.radius,
+                self.center.x + self.radius,
+                self.center.y + self.radius,
+                self.center.z + self.radius,
             ),
         )
     }

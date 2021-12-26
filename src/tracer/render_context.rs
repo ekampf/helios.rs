@@ -227,7 +227,7 @@ impl RenderTask {
             let v = (height - y + sv) / height;
 
             let ray = scene.camera.get_ray(u, v);
-            let color_sample = RenderTask::cast_ray(&ray, &scene, &mut rng, 0);
+            let color_sample = RenderTask::cast_ray(&ray, scene, &mut rng, 0);
 
             color += color_sample;
             rays_count += 1

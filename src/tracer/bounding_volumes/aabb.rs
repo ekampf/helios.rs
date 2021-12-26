@@ -3,6 +3,7 @@ use crate::tracer::{Point3f, Ray, Vector3f};
 use cgmath::*;
 
 /// Axis-aligned Bounding Box
+#[allow(clippy::upper_case_acronyms)]
 #[derive(Debug, Copy, Clone)]
 pub struct AABB {
     pub min: Vector3f,

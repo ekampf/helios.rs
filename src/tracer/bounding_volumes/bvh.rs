@@ -108,13 +108,10 @@ impl SceneIntersectable for BVHNode {
                 // We reached a leaf node
 
                 let object = object.clone();
-                return match object.intersects(ray, dist_min, dist_max) {
-                    Some(intersection) => Some(SceneIntersection {
-                        intersection,
-                        object,
-                    }),
-                    None => None,
-                };
+                return object.intersects(ray, dist_min, dist_max).map(|intersection| SceneIntersection {
+                    intersection,
+                    object,
+                });
             }
 
             let left = self.left.clone();
@@ -128,19 +125,18 @@ impl SceneIntersectable for BVHNode {
                 None => None,
             };
 
-            if lsi.is_some() && rsi.is_some() {
-                let lsi = lsi.unwrap();
-                let rsi = rsi.unwrap();
-                if lsi.intersection.dist < rsi.intersection.dist {
-                    return Some(lsi);
-                } else {
-                    return Some(rsi);
-                }
-            } else if lsi.is_some() {
-                return lsi;
-            } else if rsi.is_some() {
-                return rsi;
-            }
+            return match (lsi, rsi) {
+                (Some(lsi), Some(rsi)) => {
+                    if lsi.intersection.dist < rsi.intersection.dist {
+                        Some(lsi)
+                    } else {
+                        Some(rsi)
+                    }
+                },
+                (Some(lsi), None) => Some(lsi),
+                (None, Some(rsi)) => Some(rsi),
+                _ => None
+            };
         }
 
         None

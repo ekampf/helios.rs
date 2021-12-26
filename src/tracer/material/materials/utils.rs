@@ -4,12 +4,12 @@ use cgmath::*;
 pub fn schlick(cosine: f64, ref_idx: f64) -> f64 {
     let r0 = (1.0 - ref_idx) / (1.0 + ref_idx);
     let r0 = r0 * r0;
-    r0 + (1.0 - r0) * (1.0 - cosine).powi(5);
+    r0 + (1.0 - r0) * (1.0 - cosine).powi(5)
 }
 
 pub fn reflect(v: Vector3f, normal: Vector3f) -> Vector3f {
     let d2 = v.dot(normal) * 2.0;
-    v - normal * d2;
+    v - normal * d2
 }
 
 pub fn refract(v: Vector3f, n: Vector3f, ni_over_nt: f64) -> Option<Vector3f> {

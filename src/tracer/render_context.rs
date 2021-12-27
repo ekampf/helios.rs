@@ -88,9 +88,8 @@ impl RenderContext {
 
         for mut wc in &(0..width).into_iter().chunks(chunk_size) {
             let chunk_size = chunk_size as u64;
-            let from_x: u64 = wc.nth(0).unwrap() as u64;
+            let from_x: u64 = wc.next().unwrap() as u64;
             let to_x = (from_x + chunk_size).min(self.width);
-            //            info!("Generating chunk - from_x: {}, to_x: {}", from_x, to_x);
 
             let task = RenderTask {
                 from_x,

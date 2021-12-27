@@ -32,7 +32,7 @@ pub fn render(
         Err(error) => println!("Oh noes: {}", error),
     }
 
-    opener::open(output);
+    opener::open(output)?;
 
     Ok(())
 }

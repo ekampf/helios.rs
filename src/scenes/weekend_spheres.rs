@@ -107,7 +107,7 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
                 let sphere = Sphere {
                     center,
                     radius,
-                    material: material,
+                    material,
                 };
                 objects.push(Arc::new(sphere));
             }

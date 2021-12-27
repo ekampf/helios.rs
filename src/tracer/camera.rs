@@ -49,7 +49,7 @@ impl SimpleCamera {
         let horizontal = u * 2_f64 * half_width * focus_dist;
         let vertical = v * 2_f64 * half_height * focus_dist;
 
-        let camera = SimpleCamera {
+        SimpleCamera {
             origin: look_from,
             lower_left_corner,
             horizontal,
@@ -58,9 +58,7 @@ impl SimpleCamera {
             v,
             w,
             lens_radius,
-        };
-
-        return camera;
+        }
     }
 }
 

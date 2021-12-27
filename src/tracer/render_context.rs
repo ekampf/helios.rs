@@ -6,8 +6,9 @@ use log::info;
 use rand::prelude::*;
 use rayon::prelude::*;
 use std::ops::Range;
-use std::path::PathBuf;
+use std::path::Path;
 use std::sync::{Arc, Mutex};
+use std::time::Instant;
 
 #[derive(Debug)]
 pub struct RenderContext {
@@ -18,7 +19,7 @@ pub struct RenderContext {
 
     // Some stats
     pub rays_cast: u64,
-    pub start_time: f64,
+    pub start_time: Instant,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -44,23 +45,31 @@ impl RenderContext {
             height,
             pixels: vec![Color::black(); total_pixels as usize],
             rays_cast: 0,
-            start_time: time::precise_time_s(),
+            start_time: Instant::now(),
         }
     }
 
     pub fn print_stats(&self) {
-        let elapsed = time::precise_time_s() - self.start_time;
+        let elapsed = self.start_time.elapsed();
 
-        print!("\n==========================================\n");
-        print!("| Rays Cast: {}\n", self.rays_cast);
-        print!("| Elapsed Time (s): {:.4}\n", elapsed);
-        print!("| Rays per sec: {:.2}\n", self.rays_cast as f64 / elapsed);
-        print!("==========================================\n");
+        println!();
+        println!("==========================================");
+        println!("| Rays Cast: {}", self.rays_cast);
+        println!("| Elapsed Time (s): {:.4}\n", elapsed.as_secs_f64());
+        println!(
+            "| Rays per sec: {:.2}\n",
+            self.rays_cast as f64 / elapsed.as_secs_f64()
+        );
+        println!("==========================================");
     }
 
     pub fn get_stats(&self) -> (u64, f64, f64) {
-        let elapsed = time::precise_time_s() - self.start_time;
-        (self.rays_cast, elapsed, self.rays_cast as f64 / elapsed)
+        let elapsed = self.start_time.elapsed();
+        (
+            self.rays_cast,
+            elapsed.as_secs_f64(),
+            self.rays_cast as f64 / elapsed.as_secs_f64(),
+        )
     }
 
     pub fn get_stats_message(&self) -> String {
@@ -79,9 +88,8 @@ impl RenderContext {
 
         for mut wc in &(0..width).into_iter().chunks(chunk_size) {
             let chunk_size = chunk_size as u64;
-            let from_x: u64 = wc.nth(0).unwrap() as u64;
+            let from_x: u64 = wc.next().unwrap() as u64;
             let to_x = (from_x + chunk_size).min(self.width);
-            //            info!("Generating chunk - from_x: {}, to_x: {}", from_x, to_x);
 
             let task = RenderTask {
                 from_x,
@@ -126,7 +134,7 @@ impl RenderContext {
         let rcm = Arc::new(Mutex::new(self));
 
         render_tasks.into_par_iter().for_each_with(rcm, |rcm, t| {
-            let result = t.render(&scene, pb);
+            let result = t.render(scene, pb);
 
             let mut rc = rcm.lock().unwrap();
             rc.apply_render_result(&t, &result);
@@ -138,7 +146,7 @@ impl RenderContext {
         });
     }
 
-    pub fn save(&self, output: &PathBuf) {
+    pub fn save(&self, output: &Path) {
         let img = ImageBuffer::from_fn(self.width as u32, self.height as u32, |x, y| {
             let x = x as u64;
             let y = y as u64;
@@ -185,12 +193,12 @@ impl RenderTask {
 
         for y in self.yrange() {
             for x in self.xrange() {
-                let (cast, pixel) = self.render_pixel(x, y, &scene);
+                let (cast, pixel) = self.render_pixel(x, y, scene);
                 pixels.push(pixel);
                 rays_cast += cast;
 
-                if pb.is_some() {
-                    pb.unwrap().inc(1);
+                if let Some(pb) = pb {
+                    pb.inc(1);
                 }
             }
         }
@@ -218,7 +226,7 @@ impl RenderTask {
             let v = (height - y + sv) / height;
 
             let ray = scene.camera.get_ray(u, v);
-            let color_sample = RenderTask::cast_ray(&ray, &scene, &mut rng, 0);
+            let color_sample = RenderTask::cast_ray(&ray, scene, &mut rng, 0);
 
             color += color_sample;
             rays_count += 1

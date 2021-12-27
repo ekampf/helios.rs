@@ -3,6 +3,7 @@ use crate::tracer::{Point3f, Ray, Vector3f};
 use cgmath::*;
 
 /// Axis-aligned Bounding Box
+#[allow(clippy::upper_case_acronyms)]
 #[derive(Debug, Copy, Clone)]
 pub struct AABB {
     pub min: Vector3f,
@@ -39,7 +40,8 @@ impl AABB {
         if p.z < self.min.z || p.z > self.max.z {
             return false;
         }
-        return true;
+
+        true
     }
 }
 
@@ -54,7 +56,7 @@ fn find_min_max(min: &Vector3f, max: &Vector3f, ro: &Point3f, invrd: &Vector3f) 
 
     let tmin = t1.min(t2).max(t3.min(t4)).max(t5.min(t6));
     let tmax = t1.max(t2).min(t3.max(t4)).min(t5.max(t6));
-    return (tmin, tmax);
+    (tmin, tmax)
 }
 
 impl BoundingVolume for AABB {
@@ -76,7 +78,7 @@ impl BoundingVolume for AABB {
             return false;
         }
 
-        return true;
+        true
     }
 }
 

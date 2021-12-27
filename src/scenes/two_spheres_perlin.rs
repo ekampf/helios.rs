@@ -64,7 +64,7 @@ pub fn get_scene(width: u64, height: u64, samples: u64) -> Scene {
     let bg_sphere = Sphere {
         center: Point3::new(0.0, -1000.0, 0.0),
         radius: 1000.0,
-        material: Arc::new(Lambertian::new(checkers_texture.clone())),
+        material: Arc::new(Lambertian::new(checkers_texture)),
     };
     objects.push(Arc::new(bg_sphere));
 

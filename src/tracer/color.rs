@@ -12,7 +12,7 @@ pub struct Color {
 
 impl Color {
     pub fn new(red: f64, green: f64, blue: f64) -> Color {
-        return Color { red, green, blue };
+        Color { red, green, blue }
     }
 
     pub fn black() -> Color {
@@ -27,11 +27,11 @@ impl Color {
         Color::new(v.x, v.y, v.z)
     }
 
-    pub fn to_vec3f(&self) -> Vector3f {
+    pub fn to_vec3f(self) -> Vector3f {
         vec3(self.red, self.green, self.blue)
     }
 
-    pub fn sqrt(&self) -> Color {
+    pub fn sqrt(self) -> Color {
         Color::new(self.red.sqrt(), self.green.sqrt(), self.blue.sqrt())
     }
 }

@@ -16,7 +16,7 @@ pub struct Metal {
 impl Metal {
     pub fn new(albedo: Vector3f, fuzz: f64) -> Metal {
         let fuzz = fuzz.min(1.0_f64);
-        return Metal { albedo, fuzz };
+        Metal { albedo, fuzz }
     }
 }
 
@@ -35,6 +35,6 @@ impl Material for Metal {
             });
         }
 
-        return None;
+        None
     }
 }

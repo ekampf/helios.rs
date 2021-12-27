@@ -4,7 +4,7 @@ use console::{style, Emoji};
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::current_num_threads;
 use serde::*;
-use std::path::PathBuf;
+use std::path::Path;
 use std::str::FromStr;
 
 #[derive(Debug, Deserialize)]
@@ -18,7 +18,8 @@ pub enum SceneNames {
 impl FromStr for SceneNames {
     type Err = serde_json::error::Error;
     fn from_str(s: &str) -> Result<SceneNames, serde_json::error::Error> {
-        Ok(serde_json::from_str(&format!("\"{}\"", s))?)
+        let scene_name = serde_json::from_str(&format!("\"{}\"", s)).unwrap();
+        Ok(scene_name)
     }
 }
 
@@ -42,7 +43,7 @@ static RENDER: Emoji<'_, '_> = Emoji("🖼️  ", "");
 
 pub fn render(
     scene_name: SceneNames,
-    output: &PathBuf,
+    output: &Path,
     width: u64,
     height: u64,
     samples: u64,

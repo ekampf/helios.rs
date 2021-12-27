@@ -17,6 +17,12 @@ impl SceneObjectList {
     }
 }
 
+impl Default for SceneObjectList {
+    fn default() -> SceneObjectList {
+        SceneObjectList::new()
+    }
+}
+
 impl SceneIntersectable for SceneObjectList {
     fn intersect(&self, ray: &Ray, dist_min: f64, dist_max: f64) -> Option<SceneIntersection> {
         let mut closest: Option<Intersection> = None;

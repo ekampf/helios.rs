@@ -15,24 +15,25 @@ impl Color {
         Color { red, green, blue }
     }
 
-    pub fn black() -> Color {
-        Color::new(0.0, 0.0, 0.0)
+    pub fn black() -> Self {
+        Self::new(0.0, 0.0, 0.0)
     }
 
-    pub fn white() -> Color {
-        Color::new(1.0, 1.0, 1.0)
+    pub fn white() -> Self {
+        Self::new(1.0, 1.0, 1.0)
     }
 
-    pub fn from_vec3f(v: Vector3f) -> Color {
-        Color::new(v.x, v.y, v.z)
+    pub fn from_vec3f(v: Vector3f) -> Self {
+        Self::new(v.x, v.y, v.z)
     }
 
     pub fn to_vec3f(self) -> Vector3f {
         vec3(self.red, self.green, self.blue)
     }
 
-    pub fn sqrt(self) -> Color {
-        Color::new(self.red.sqrt(), self.green.sqrt(), self.blue.sqrt())
+    #[must_use]
+    pub fn sqrt(self) -> Self {
+        Self::new(self.red.sqrt(), self.green.sqrt(), self.blue.sqrt())
     }
 }
 

@@ -1,11 +1,11 @@
 mod lights;
-mod material;
+mod traits;
 mod materials;
 mod texture;
 mod textures;
 
 pub use lights::*;
-pub use material::*;
+pub use traits::*;
 pub use materials::*;
 pub use texture::*;
 pub use textures::*;

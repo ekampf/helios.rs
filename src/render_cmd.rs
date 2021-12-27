@@ -18,7 +18,8 @@ pub enum SceneNames {
 impl FromStr for SceneNames {
     type Err = serde_json::error::Error;
     fn from_str(s: &str) -> Result<SceneNames, serde_json::error::Error> {
-        Ok(serde_json::from_str(&format!("\"{}\"", s))?)
+        let scene_name = serde_json::from_str(&format!("\"{}\"", s)).unwrap();
+        Ok(scene_name)
     }
 }
 

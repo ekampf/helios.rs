@@ -15,7 +15,8 @@ impl AABB {
         AABB { min, max }
     }
 
-    pub fn union(&self, other: &AABB) -> AABB {
+    #[must_use]
+    pub fn union(&self, other: &AABB) -> Self {
         let min = vec3(
             self.min.x.min(other.min.x),
             self.min.y.min(other.min.y),
@@ -26,7 +27,7 @@ impl AABB {
             self.max.y.max(other.max.y),
             self.max.z.max(other.max.z),
         );
-        AABB { min, max }
+        Self { min, max }
     }
 
     #[allow(dead_code)]

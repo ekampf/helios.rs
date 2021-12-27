@@ -31,6 +31,7 @@ impl Color {
         vec3(self.red, self.green, self.blue)
     }
 
+    #[must_use]
     pub fn sqrt(self) -> Self {
         Self::new(self.red.sqrt(), self.green.sqrt(), self.blue.sqrt())
     }

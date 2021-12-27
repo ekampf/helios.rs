@@ -25,15 +25,13 @@ impl Ray {
     }
 
     pub fn get_inverse_direction(&self) -> Vector3f {
-        *self.inverse_direction
-            .borrow_mut()
-            .get_or_insert_with(|| {
-                vec3(
-                    1f64 / self.direction.x,
-                    1f64 / self.direction.y,
-                    1f64 / self.direction.z,
-                )
-            })
+        *self.inverse_direction.borrow_mut().get_or_insert_with(|| {
+            vec3(
+                1f64 / self.direction.x,
+                1f64 / self.direction.y,
+                1f64 / self.direction.z,
+            )
+        })
     }
 }
 

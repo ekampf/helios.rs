@@ -83,7 +83,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
             LoggerBuilder::new().filter(None, level_filter).try_init()?;
 
-            let result = render_cmd::render(scene_name, output.as_path(), width, height, samples, threads);
+            let result = render_cmd::render(
+                scene_name,
+                output.as_path(),
+                width,
+                height,
+                samples,
+                threads,
+            );
 
             if open {
                 opener::open(output)?;

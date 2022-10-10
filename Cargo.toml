@@ -25,7 +25,7 @@ rayon = "1.2.0"
 rand = "0.7.0"
 cgmath = "0.17.0"
 image = "0.23.12"
-noise = "0.6.0"
+noise = "0.8.1"
 
 [dev-dependencies]
 criterion = "0.3"

@@ -12,7 +12,7 @@ structopt = "0.3.20"
 log = "0.4.8"
 env_logger = "0.8.2"
 clap-verbosity-flag = "0.3.1"
-indicatif = "0.15.0"
+indicatif = "0.17.3"
 console = "0.13.0"
 opener = "0.4.0"
 
